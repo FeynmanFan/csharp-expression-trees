@@ -4,18 +4,6 @@ namespace Delegates
 {
     internal class Program
     {
-        public static bool WriteMessage(string message)
-        {
-            Console.WriteLine(message);
-            return true;
-        }
-
-        public static bool WriteTimelyMessage(string message)
-        {
-            Console.WriteLine(message + " " + DateTime.Now);
-            return true;
-        }
-
         static void Main(string[] args)
         {
             var selection = Console.ReadLine();
@@ -24,11 +12,20 @@ namespace Delegates
 
             if (selection == "1")
             {
-                func = WriteTimelyMessage;
+                func = message =>
+                {
+                    Console.WriteLine(message + " " + DateTime.Now);
+                    return true;
+                }
+                ;
             }
             else
             {
-                func = WriteMessage;
+                func = message =>
+                {
+                    Console.WriteLine(message);
+                    return true;
+                };
             }
 
             var result =    ExecuteWrite(func);
