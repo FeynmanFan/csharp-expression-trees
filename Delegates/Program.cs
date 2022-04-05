@@ -6,34 +6,20 @@ namespace Delegates
     {
         static void Main(string[] args)
         {
-            var selection = Console.ReadLine();
+            var guitars = new List<Guitar>();
 
-            Func<string, bool> func;
+            guitars.Add(new Guitar(PickupType.Electric, StringType.Steel, "Cherry Red Strat"));
+            guitars.Add(new Guitar(PickupType.AcousticElectric, StringType.Nylon, "Takamine EG-116")); ;
+            guitars.Add(new Guitar(PickupType.Acoustic, StringType.Steel, "Martin D-X1E"));
 
-            if (selection == "1")
+            Func<Guitar, bool> nylon = guitar => guitar.Strings == StringType.Nylon;
+
+            var nylonGuitars = guitars.Where(nylon);
+
+            foreach(var guitar in nylonGuitars)
             {
-                func = message =>
-                {
-                    Console.WriteLine(message + " " + DateTime.Now);
-                    return true;
-                }
-                ;
+                Console.WriteLine(guitar.Name);
             }
-            else
-            {
-                func = message =>
-                {
-                    Console.WriteLine(message);
-                    return true;
-                };
-            }
-
-            var result =    ExecuteWrite(func);
-        }
-
-        private static bool ExecuteWrite(Func<string, bool> func)
-        {
-            return func("Hello World");
         }
     }
 }
