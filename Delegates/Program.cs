@@ -16,7 +16,11 @@ namespace Delegates
 
             var nylonGuitars = guitars.Where(nylon);
 
-            foreach(var guitar in nylonGuitars)
+            // var electricGuitars = guitars.Where(guitar => guitar.Pickup == PickupType.Electric);
+
+            IEnumerable<Guitar> electricGuitars = Enumerable.Where<Guitar>(guitars, guitar => guitar.Pickup == PickupType.Electric);
+
+            foreach (var guitar in electricGuitars.ToList())
             {
                 Console.WriteLine(guitar.Name);
             }
