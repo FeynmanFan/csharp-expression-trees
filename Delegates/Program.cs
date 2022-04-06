@@ -11,10 +11,15 @@ namespace Delegates
             var constantExpression = Expression.Constant(12);
             var greaterThan = Expression.GreaterThan(xExpression, constantExpression);
 
-            var expr = Expression.Lambda<Func<int, bool>>(greaterThan, false, new List<ParameterExpression> { xExpression, });
+            var constant4Expression = Expression.Constant(4);
+            var lessThan = Expression.LessThan(xExpression, constant4Expression);
+
+            var or = Expression.Or(greaterThan, lessThan);
+
+            var expr = Expression.Lambda<Func<int, bool>>(or, false, new List<ParameterExpression> { xExpression, });
             var func = expr.Compile();
 
-            Console.WriteLine(func(11));
+            Console.WriteLine(func(2));
         }
     }
 }

@@ -1,0 +1,113 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<form id="mainForm" method="post">
+    <div class="text-center">
+        <h1 class="display-4">Passengers of the R.M.S Titanic</h1>
+        <table>
+            <tr>
+                <td>
+                    Survived?
+                </td>
+                <td>
+                    <select id="survived" name="survived">
+                        <option value=""></option>
+                        <option value="Survived">Survived</option>
+                        <option value="Perished">Perished</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    PClass
+                </td>
+                <td>
+                     <select id='pClass' name='pClass'>
+                         <option value=""></option>
+                         <option value='1'>1</option>
+                         <option value='2'>2</option>
+                         <option value='3'>3</option>
+                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Sex
+                </td>
+                <td>
+                    <select id='sex' name='sex'>
+                        <option value=""></option>
+                        <option value='male'>Male</option>
+                        <option value='female'>Female</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Age
+                </td>
+                <td>
+                    <input type="text" id="age" name="age" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Minumum Fare
+                </td>
+                <td>
+                    <input type="text" id="minimumFare" name='minimumFare' />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Filter Passengers" />
+                </td>
+            </tr>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Survived
+                    </th>
+                    <th>
+                        PClass
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Sex
+                    </th>
+                    <th>
+                        Age
+                    </th>
+                    <th>
+                        SiblingsOrSpouse
+                    </th>
+                    <th>
+                        ParentOrChildren
+                    </th>
+                    <th>
+                        Fare
+                    </th>
+                </tr>
+            </thead>
+        @foreach(var passenger in Model.Passengers)
+        {
+            <tr>
+                <td>@passenger.Survived</td>
+                <td>@passenger.PClass</td>
+                <td>@passenger.Name</td>
+                <td>@passenger.Sex</td>
+                <td>@passenger.Age</td>
+                <td>@passenger.SiblingsOrSpouse</td>
+                <td>@passenger.ParentOrChildren</td>
+                <td>@passenger.Fare</td>
+            </tr>
+        }
+        </table>
+    </div>
+</form>
