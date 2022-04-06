@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace Delegates
 {
@@ -6,24 +7,14 @@ namespace Delegates
     {
         static void Main(string[] args)
         {
-            var guitars = new List<Guitar>();
+            var xExpression = Expression.Parameter(typeof(int), "x");
+            var constantExpression = Expression.Constant(12);
+            var greaterThan = Expression.GreaterThan(xExpression, constantExpression);
 
-            guitars.Add(new Guitar(PickupType.Electric, StringType.Steel, "Cherry Red Strat"));
-            guitars.Add(new Guitar(PickupType.AcousticElectric, StringType.Nylon, "Takamine EG-116")); ;
-            guitars.Add(new Guitar(PickupType.Acoustic, StringType.Steel, "Martin D-X1E"));
+            var expr = Expression.Lambda<Func<int, bool>>(greaterThan, false, new List<ParameterExpression> { xExpression, });
+            var func = expr.Compile();
 
-            Func<Guitar, bool> nylon = guitar => guitar.Strings == StringType.Nylon;
-
-            var nylonGuitars = guitars.Where(nylon);
-
-            // var electricGuitars = guitars.Where(guitar => guitar.Pickup == PickupType.Electric);
-
-            IEnumerable<Guitar> electricGuitars = Enumerable.Where<Guitar>(guitars, guitar => guitar.Pickup == PickupType.Electric);
-
-            foreach (var guitar in electricGuitars.ToList())
-            {
-                Console.WriteLine(guitar.Name);
-            }
+            Console.WriteLine(func(11));
         }
     }
 }
