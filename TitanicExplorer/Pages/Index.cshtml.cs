@@ -5,6 +5,7 @@
     using TitanicExplorer.Data;
     using System.IO;
     using static TitanicExplorer.Data.Passenger;
+    using System.Linq.Expressions;
 
     public class IndexModel : PageModel
     {
@@ -36,41 +37,120 @@
             var survived = Request.Form["survived"]!= "" ? ParseSurvived(Request.Form["survived"]) : null;
             var pClass = ParseNullInt(Request.Form["pClass"]);
             var sex = Request.Form["sex"] != "" ? ParseSex(Request.Form["sex"]) : null;
-            var age = ParseNullInt(Request.Form["age"]);
+            var age = ParseNullDecimal(Request.Form["age"]);
             var minimumFare = ParseNullDecimal(Request.Form["minimumFare"]);
 
             this.Passengers = FilterPassengers(survived, pClass, sex, age, minimumFare);
         }
 
-        private IEnumerable<Passenger> FilterPassengers(bool? survived, int? pClass, SexValue? sex, int? age, decimal? minimumFare)
+        private IEnumerable<Passenger> FilterPassengers(bool? survived, int? pClass, SexValue? sex, decimal? age, decimal? minimumFare)
         {
+            Expression currentExpression = null;
+
+            var passengerParameter = Expression.Parameter(typeof(Passenger));
+
             if (survived != null)
             {
-                this.Passengers = this.Passengers.Where(x => x.Survived == survived.Value);
+                var survivedValue = Expression.Constant(survived.Value);
+
+                var passengerSurvived = Expression.Property(passengerParameter, "Survived");
+
+                currentExpression = Expression.Equal(passengerSurvived, survivedValue);
             }
 
             if (pClass != null)
             {
-                this.Passengers = this.Passengers.Where(x => x.PClass == pClass.Value);
+                var pClassValue = Expression.Constant(pClass.Value);
+
+                var passengerPClass = Expression.Property(passengerParameter, "PClass");
+
+                var pClassEquals = Expression.Equal(passengerPClass, pClassValue);
+
+                if (currentExpression == null)
+                {
+                    currentExpression = pClassEquals;
+                }
+                else
+                {
+                    var previousExpression = currentExpression;
+
+                    currentExpression = Expression.And(previousExpression, pClassEquals);
+                }
             }
 
             if (sex != null)
             {
-                this.Passengers = this.Passengers.Where(x => x.Sex == sex.Value);
+                var sexValue = Expression.Constant(sex.Value);
+
+                var passengerSex = Expression.Property(passengerParameter, "Sex");
+
+                var sexEquals = Expression.Equal(passengerSex, sexValue);
+
+                if (currentExpression == null)
+                {
+                    currentExpression = sexEquals;
+                }
+                else
+                {
+                    var previousExpression = currentExpression;
+
+                    currentExpression = Expression.And(previousExpression, sexEquals);
+                }
             }
 
             if (age != null)
             {
-                this.Passengers = this.Passengers.Where(x => x.Age == age.Value);
+                var ageValue = Expression.Constant(age.Value);
+
+                var passengerAge = Expression.Property(passengerParameter, "Age");
+
+                var ageEquals = Expression.Equal(passengerAge, ageValue);
+
+                if (currentExpression == null)
+                {
+                    currentExpression = ageEquals;
+                }
+                else
+                {
+                    var previousExpression = currentExpression;
+
+                    currentExpression = Expression.And(previousExpression, ageEquals);
+                }
             }
 
             if (minimumFare != null)
             {
-                this.Passengers = this.Passengers.Where(x => x.Fare >= minimumFare.Value);
+                var minumFareValue = Expression.Constant(minimumFare.Value);
+
+                var passengerFare= Expression.Property(passengerParameter, "Fare");
+
+                var fareGreaterThan = Expression.GreaterThan(passengerFare, minumFareValue);
+
+                if (currentExpression == null)
+                {
+                    currentExpression = fareGreaterThan;
+                }
+                else
+                {
+                    var previousExpression = currentExpression;
+
+                    currentExpression = Expression.And(previousExpression, fareGreaterThan);
+                }
+
+            }
+
+            if (currentExpression != null)
+            {
+                var expr = Expression.Lambda<Func<Passenger, bool>>(currentExpression, false, new List<ParameterExpression> { passengerParameter });
+                var func = expr.Compile();
+
+                this.Passengers = this.Passengers.Where(func);
             }
 
             return this.Passengers;
         }
+
+
 
         public decimal? ParseNullDecimal(string value)
         {
