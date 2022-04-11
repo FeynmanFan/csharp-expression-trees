@@ -51,92 +51,27 @@
 
             if (survived != null)
             {
-                var survivedValue = Expression.Constant(survived.Value);
-
-                var passengerSurvived = Expression.Property(passengerParameter, "Survived");
-
-                currentExpression = Expression.Equal(passengerSurvived, survivedValue);
+                currentExpression = CreateExpression<bool>(survived.Value, null, "Survived", passengerParameter);
             }
 
             if (pClass != null)
             {
-                var pClassValue = Expression.Constant(pClass.Value);
-
-                var passengerPClass = Expression.Property(passengerParameter, "PClass");
-
-                var pClassEquals = Expression.Equal(passengerPClass, pClassValue);
-
-                if (currentExpression == null)
-                {
-                    currentExpression = pClassEquals;
-                }
-                else
-                {
-                    var previousExpression = currentExpression;
-
-                    currentExpression = Expression.And(previousExpression, pClassEquals);
-                }
+                currentExpression = CreateExpression<int>(pClass.Value, currentExpression, "PClass", passengerParameter);
             }
 
             if (sex != null)
             {
-                var sexValue = Expression.Constant(sex.Value);
-
-                var passengerSex = Expression.Property(passengerParameter, "Sex");
-
-                var sexEquals = Expression.Equal(passengerSex, sexValue);
-
-                if (currentExpression == null)
-                {
-                    currentExpression = sexEquals;
-                }
-                else
-                {
-                    var previousExpression = currentExpression;
-
-                    currentExpression = Expression.And(previousExpression, sexEquals);
-                }
+                currentExpression = CreateExpression<SexValue>(sex.Value, currentExpression, "Sex", passengerParameter);
             }
 
             if (age != null)
             {
-                var ageValue = Expression.Constant(age.Value);
-
-                var passengerAge = Expression.Property(passengerParameter, "Age");
-
-                var ageEquals = Expression.Equal(passengerAge, ageValue);
-
-                if (currentExpression == null)
-                {
-                    currentExpression = ageEquals;
-                }
-                else
-                {
-                    var previousExpression = currentExpression;
-
-                    currentExpression = Expression.And(previousExpression, ageEquals);
-                }
+                currentExpression = CreateExpression<decimal>(age.Value, currentExpression, "Age", passengerParameter);
             }
 
             if (minimumFare != null)
             {
-                var minumFareValue = Expression.Constant(minimumFare.Value);
-
-                var passengerFare= Expression.Property(passengerParameter, "Fare");
-
-                var fareGreaterThan = Expression.GreaterThan(passengerFare, minumFareValue);
-
-                if (currentExpression == null)
-                {
-                    currentExpression = fareGreaterThan;
-                }
-                else
-                {
-                    var previousExpression = currentExpression;
-
-                    currentExpression = Expression.And(previousExpression, fareGreaterThan);
-                }
-
+                currentExpression = CreateExpression<decimal>(age.Value, currentExpression, "Age", passengerParameter, ">");
             }
 
             if (currentExpression != null)
@@ -150,7 +85,37 @@
             return this.Passengers;
         }
 
+        private static Expression CreateExpression<T>(object value, Expression currentExpression, string propertyName, ParameterExpression objectParameter, string operatorType = "=")
+        {
+            var valueToTest = Expression.Constant((T)value);
 
+            var propertyToCall = Expression.Property(objectParameter, propertyName);
+
+            Expression operatorExpression = null;
+
+            switch(operatorType)
+            {
+                case "=":
+                    operatorExpression = Expression.Equal(propertyToCall, valueToTest);
+                    break;
+                case ">":
+                    operatorExpression = Expression.GreaterThan(propertyToCall, valueToTest);
+                    break;
+            }
+
+            if (currentExpression == null)
+            {
+                currentExpression = operatorExpression;
+            }
+            else
+            {
+                var previousExpression = currentExpression;
+
+                currentExpression = Expression.And(previousExpression, operatorExpression);
+            }
+
+            return currentExpression;
+        }
 
         public decimal? ParseNullDecimal(string value)
         {
