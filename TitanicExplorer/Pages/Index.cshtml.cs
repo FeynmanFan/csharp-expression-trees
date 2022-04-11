@@ -45,7 +45,7 @@
 
         private IEnumerable<Passenger> FilterPassengers(bool? survived, int? pClass, SexValue? sex, decimal? age, decimal? minimumFare)
         {
-            Expression currentExpression = null;
+            Expression? currentExpression = null;
 
             var passengerParameter = Expression.Parameter(typeof(Passenger));
 
@@ -71,7 +71,7 @@
 
             if (minimumFare != null)
             {
-                currentExpression = CreateExpression<decimal>(age.Value, currentExpression, "Age", passengerParameter, ">");
+                currentExpression = CreateExpression<decimal>(minimumFare.Value, currentExpression, "Fare", passengerParameter, ">");
             }
 
             if (currentExpression != null)
@@ -85,21 +85,40 @@
             return this.Passengers;
         }
 
-        private static Expression CreateExpression<T>(object value, Expression currentExpression, string propertyName, ParameterExpression objectParameter, string operatorType = "=")
+        /// <summary>
+        /// Aggregates an expression with a property and an operator
+        /// </summary>
+        /// <typeparam name="T">The type of the parameter</typeparam>
+        /// <param name="value">The constant value to use in the expression</param>
+        /// <param name="currentExpression">The expression to aggregate with, if any</param>
+        /// <param name="propertyName">The name of the property to call on the objectParameter</param>
+        /// <param name="objectParameter">The parameter for the object for evaluation</param>
+        /// <param name="operatorType">A string of the operator to use</param>
+        /// <returns></returns>
+        private static Expression CreateExpression<T>(T value, Expression? currentExpression, string propertyName, ParameterExpression objectParameter, string operatorType = "=")
         {
-            var valueToTest = Expression.Constant((T)value);
+            var valueToTest = Expression.Constant(value);
 
             var propertyToCall = Expression.Property(objectParameter, propertyName);
 
-            Expression operatorExpression = null;
+            Expression operatorExpression;
 
-            switch(operatorType)
+            switch (operatorType)
             {
-                case "=":
-                    operatorExpression = Expression.Equal(propertyToCall, valueToTest);
-                    break;
                 case ">":
                     operatorExpression = Expression.GreaterThan(propertyToCall, valueToTest);
+                    break;
+                case "<":
+                    operatorExpression = Expression.LessThan(propertyToCall, valueToTest);
+                    break;
+                case ">=":
+                    operatorExpression = Expression.GreaterThanOrEqual(propertyToCall, valueToTest);
+                    break;
+                case "<=":
+                    operatorExpression = Expression.LessThanOrEqual(propertyToCall, valueToTest);
+                    break;
+                default:
+                    operatorExpression = Expression.Equal(propertyToCall, valueToTest);
                     break;
             }
 
