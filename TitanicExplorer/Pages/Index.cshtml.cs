@@ -6,6 +6,8 @@
     using System.IO;
     using static TitanicExplorer.Data.Passenger;
     using System.Linq.Expressions;
+    using AgileObjects.ReadableExpressions;
+    using System.Linq.Dynamic.Core;
 
     public class IndexModel : PageModel
     {
@@ -32,6 +34,8 @@
 
         }
 
+        public string query { get; set; }
+
         public void OnPost()
         {
             var survived = Request.Form["survived"]!= "" ? ParseSurvived(Request.Form["survived"]) : null;
@@ -39,6 +43,7 @@
             var sex = Request.Form["sex"] != "" ? ParseSex(Request.Form["sex"]) : null;
             var age = ParseNullDecimal(Request.Form["age"]);
             var minimumFare = ParseNullDecimal(Request.Form["minimumFare"]);
+            this.query = Request.Form["query"];
 
             this.Passengers = FilterPassengers(survived, pClass, sex, age, minimumFare);
         }
@@ -46,6 +51,15 @@
         private IEnumerable<Passenger> FilterPassengers(bool? survived, int? pClass, SexValue? sex, decimal? age, decimal? minimumFare)
         {
             Expression? currentExpression = null;
+
+            if (!string.IsNullOrEmpty(this.query))
+            {
+                var expr = DynamicExpressionParser.ParseLambda<Passenger, bool>(new ParsingConfig(), true, this.query);
+
+                var func = expr.Compile();
+
+                return this.Passengers.Where(func);
+            }
 
             var passengerParameter = Expression.Parameter(typeof(Passenger));
 
@@ -78,6 +92,8 @@
             {
                 var expr = Expression.Lambda<Func<Passenger, bool>>(currentExpression, false, new List<ParameterExpression> { passengerParameter });
                 var func = expr.Compile();
+
+                this.query = expr.ToReadableString();
 
                 this.Passengers = this.Passengers.Where(func);
             }
