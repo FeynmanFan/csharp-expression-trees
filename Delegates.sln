@@ -5,11 +5,15 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delegates", "Delegates\Delegates.csproj", "{AD09DEB8-E904-4E8A-80D5-81536649CAF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanicExplorer", "TitanicExplorer\TitanicExplorer.csproj", "{BFE2DF0E-36B7-4A6C-A5D7-6A4311D39212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicExplorer", "TitanicExplorer\TitanicExplorer.csproj", "{BFE2DF0E-36B7-4A6C-A5D7-6A4311D39212}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanicExplorer.Data", "TitanicExplorer.Data\TitanicExplorer.Data.csproj", "{F59ACB48-2B94-44C9-A97D-EDF2EE6B6AC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicExplorer.Data", "TitanicExplorer.Data\TitanicExplorer.Data.csproj", "{F59ACB48-2B94-44C9-A97D-EDF2EE6B6AC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanicExplorer.Data.Tests", "TitanicExplorer.Data.Tests\TitanicExplorer.Data.Tests.csproj", "{061D6E67-45A1-4867-A9EC-BF637FE6004D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicExplorer.Data.Tests", "TitanicExplorer.Data.Tests\TitanicExplorer.Data.Tests.csproj", "{061D6E67-45A1-4867-A9EC-BF637FE6004D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicExplorer.Scripting", "TitanicExplorer.Scripting\TitanicExplorer.Scripting.csproj", "{9879136F-9AAD-43D9-8201-39A1CF92C323}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitatnicExplorer.Scripting.Tests", "TitatnicExplorer.Scripting.Tests\TitatnicExplorer.Scripting.Tests.csproj", "{7D179EC1-554D-49D9-962D-D4C9CDE51A4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{061D6E67-45A1-4867-A9EC-BF637FE6004D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{061D6E67-45A1-4867-A9EC-BF637FE6004D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{061D6E67-45A1-4867-A9EC-BF637FE6004D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9879136F-9AAD-43D9-8201-39A1CF92C323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9879136F-9AAD-43D9-8201-39A1CF92C323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9879136F-9AAD-43D9-8201-39A1CF92C323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9879136F-9AAD-43D9-8201-39A1CF92C323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D179EC1-554D-49D9-962D-D4C9CDE51A4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D179EC1-554D-49D9-962D-D4C9CDE51A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D179EC1-554D-49D9-962D-D4C9CDE51A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D179EC1-554D-49D9-962D-D4C9CDE51A4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
