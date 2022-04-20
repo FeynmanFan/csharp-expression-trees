@@ -1,12 +1,9 @@
-using AgileObjects.ReadableExpressions;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq.Expressions;
 using TitanicExplorer.Scripting;
 using Xunit;
 
-namespace TitatnicExplorer.Scriptings.Tests
+namespace TitanicExplorer.Scriptings.Tests
 {
     public class UnitTest1
     {
@@ -18,8 +15,6 @@ namespace TitatnicExplorer.Scriptings.Tests
             var result = ScriptingEngine.IsPrime(value);
 
             var expr = Expression.Lambda<Func<int, bool>>(result, value);
-
-            //Debug.WriteLine(expr.ToReadableString());
 
             var func = expr.Compile();
 
@@ -33,10 +28,12 @@ namespace TitatnicExplorer.Scriptings.Tests
         }
 
         [Fact]
-        public void Test2()
+        public void Test()
         {
-            Func<int, bool> func = (value) =>
+            Func<int, bool> func = value =>
             {
+                bool result;
+
                 if (value <= 1)
                 {
                     return false;
@@ -49,7 +46,7 @@ namespace TitatnicExplorer.Scriptings.Tests
 
                 if ((value % 2) == 0)
                 {
-                    return true;
+                    return false;
                 }
 
                 var i = 3;
@@ -74,7 +71,7 @@ namespace TitatnicExplorer.Scriptings.Tests
                 return true;
             };
 
-            Assert.Equal(true, func(3));
+            Assert.Equal(false, func(19));
         }
 
         [Fact]

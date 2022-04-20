@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicExplorer.Data.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicExplorer.Scripting", "TitanicExplorer.Scripting\TitanicExplorer.Scripting.csproj", "{9879136F-9AAD-43D9-8201-39A1CF92C323}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitatnicExplorer.Scripting.Tests", "TitatnicExplorer.Scripting.Tests\TitatnicExplorer.Scripting.Tests.csproj", "{7D179EC1-554D-49D9-962D-D4C9CDE51A4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanicExplorer.Scripting.Tests", "TitanicExplorer.Scripting.Tests\TitanicExplorer.Scripting.Tests.csproj", "{7D179EC1-554D-49D9-962D-D4C9CDE51A4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

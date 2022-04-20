@@ -1,9 +1,15 @@
 ﻿namespace TitanicExplorer.Scripting
 {
+    using System.Linq.Dynamic.Core;
     using System.Linq.Expressions;
 
     public class ScriptingEngine
     {
+        public static Expression ExpressionFromString<T, T1>(string value)
+        {
+            return DynamicExpressionParser.ParseLambda<T, T1>(new ParsingConfig(), true, value);
+        }
+
         public static Expression IsPrime(ParameterExpression value)
         {
             var label = Expression.Label();
@@ -31,7 +37,7 @@
                 new[] { i, boundary },
                 Expression.IfThen(
                     Expression.Equal(Expression.Modulo(value, i), Expression.Constant(0)),
-                    Expression.Return(label, Expression.Constant(false))
+                    Expression.Return(returnLabel, Expression.Constant(false))
                 ),
                 Expression.AddAssign(i, Expression.Constant(2))
                 );
@@ -48,7 +54,7 @@
                     ),
                     Expression.IfThen(
                             valueModTwoZero,
-                            Expression.Return(returnLabel, Expression.Constant(true))
+                            Expression.Return(returnLabel, Expression.Constant(false))
                     ),
 
                     Expression.Assign(i, Expression.Constant(3)),
