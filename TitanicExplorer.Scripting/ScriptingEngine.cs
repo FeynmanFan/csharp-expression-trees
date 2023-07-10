@@ -33,14 +33,12 @@
 
             var i = Expression.Variable(typeof(int), "i");
 
-            var modBlock = Expression.Block(
-                new[] { i, boundary },
-                Expression.IfThen(
-                    Expression.Equal(Expression.Modulo(value, i), Expression.Constant(0)),
-                    Expression.Return(returnLabel, Expression.Constant(false))
-                ),
-                Expression.AddAssign(i, Expression.Constant(2))
-                );
+            Expression modBlock = Expression.IfThen(
+                Expression.Equal(Expression.Modulo(value, i), Expression.Constant(0)),
+                Expression.Return(returnLabel, Expression.Constant(false))
+            );
+
+            Expression incrementI = Expression.AddAssign(i, Expression.Constant(2));
 
             BlockExpression block = Expression.Block(
                 new[] { result, i, boundary },
@@ -63,11 +61,11 @@
                         Expression.IfThenElse
                         (
                             Expression.LessThanOrEqual(i, boundary),
-                            modBlock,
+                            Expression.Block(modBlock, incrementI),
                             Expression.Break(label)
                         ),
                         label
-                        ),
+                    ),
                     Expression.Return(returnLabel, Expression.Constant(true)),
                     Expression.Label(returnLabel, Expression.Constant(true))
                     );
