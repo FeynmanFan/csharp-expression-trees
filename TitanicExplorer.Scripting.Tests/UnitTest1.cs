@@ -24,7 +24,9 @@ namespace TitanicExplorer.Scriptings.Tests
             Assert.True(func(3));
             Assert.False(func(4));
             Assert.True(func(5));
+            Assert.False(func(9));
             Assert.False(func(144));
+            Assert.True(func(1531));
         }
 
         [Fact]
@@ -71,7 +73,7 @@ namespace TitanicExplorer.Scriptings.Tests
                 return true;
             };
 
-            Assert.Equal(false, func(19));
+            Assert.True(func(19));
         }
 
         [Fact]
